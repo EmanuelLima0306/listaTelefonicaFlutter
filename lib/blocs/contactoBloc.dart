@@ -19,14 +19,16 @@ class ContactoBloc {
   }
 
   _mapEventToState(ContactoEvent contactoEvent) {
-    List<ContactoModel> contactos = [];
+    List<ContactoModel> _contactos = [];
 
     if (contactoEvent is LoadContactoEvent) {
-      contactos = _contactoRepository.LoadContactos();
+      _contactos = _contactoRepository.LoadContactos();
     } else if (contactoEvent is AddContactoEvent) {
-      contactos = _contactoRepository.add(contactoEvent.contactoModel);
+      _contactos = _contactoRepository.add(contactoEvent.contactoModel);
     } else if (contactoEvent is RemoveContactoEvent) {
-      contactos = _contactoRepository.remove(contactoEvent.contactoModel);
+      _contactos = _contactoRepository.remove(contactoEvent.contactoModel);
     }
+
+    _outputContactoController.add(ContactoSucessState(contactos: _contactos));
   }
 }
