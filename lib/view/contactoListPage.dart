@@ -5,6 +5,7 @@ import 'package:lista_telefonica/blocs/contactoBloc.dart';
 import 'package:lista_telefonica/blocs/event/contactoEvet.dart';
 import 'package:lista_telefonica/blocs/state/contactoState.dart';
 import 'package:lista_telefonica/theme/Theme.dart';
+import 'package:lista_telefonica/view/item/contactoItem.dart';
 
 class ContactoListPage extends StatefulWidget {
   const ContactoListPage({super.key});
@@ -32,12 +33,14 @@ class _ContactoListPageState extends State<ContactoListPage> {
 
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
+    final size = mediaQuery.size;
     return Scaffold(
       appBar: AppBar(backgroundColor: Colors.white, actions: [
         Container(
+          width: size.width,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Icon(
                 Icons.grid_view_rounded,
@@ -45,11 +48,15 @@ class _ContactoListPageState extends State<ContactoListPage> {
               ),
               Text(
                 "Contactos",
-                style: TextStyle(color: ThemeColor.titleColor),
+                style: TextStyle(color: ThemeColor.titleColor, fontSize: 20),
+              ),
+              Icon(
+                Icons.add,
+                color: ThemeColor.primaryColor,
               )
             ],
           ),
-        )
+        ),
       ]),
       body: StreamBuilder<ContactoState>(
           stream: bloc.stream,
@@ -57,10 +64,13 @@ class _ContactoListPageState extends State<ContactoListPage> {
             final contactosList = snapshot.data?.contactos ?? [];
 
             return Container(
-              color: Colors.amber,
+              padding: const EdgeInsets.all(20),
+              color: ThemeColor.CardColor,
               child: ListView(
                 children: [
-                  ...contactosList.map((contacto) => Text(contacto.name))
+                  ...contactosList.map((contacto) => ContactoItem(
+                        contactoModel: contacto,
+                      ))
                 ],
               ),
             );
