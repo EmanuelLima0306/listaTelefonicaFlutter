@@ -3,6 +3,8 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:lista_telefonica/model/concato.dart';
 import 'package:lista_telefonica/theme/Theme.dart';
+import 'package:lista_telefonica/view/item/buttons.dart';
+import 'package:lista_telefonica/view/item/iconIlustrate.dart';
 
 class ContactoItem extends StatefulWidget {
   ContactoModel contactoModel;
@@ -39,7 +41,7 @@ class _ContactoItemState extends State<ContactoItem> {
         color: ThemeColor.CardColor,
         margin: const EdgeInsets.only(bottom: 20),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             ClipOval(
@@ -78,19 +80,10 @@ class _ContactoItemState extends State<ContactoItem> {
               ),
             ),
             if (_showSecondElement)
-              Container(
-                color: Colors.amber,
-                width: size.width * .4,
-                height: size.width * .1,
-              )
-            // AnimatedCrossFade(
-            //   firstChild: Container(),
-            //   secondChild: Text('Segundo Elemento'),
-            //   crossFadeState: _showSecondElement
-            //       ? CrossFadeState.showSecond
-            //       : CrossFadeState.showFirst,
-            //   duration: Duration(milliseconds: 300),
-            // ),
+              MyButtons(myWith: size.width * .4, myHeight: size.width * .1)
+            else
+              MyIconIlustrate(
+                  myWith: size.width * .4, myHeight: size.width * .1)
           ],
         ),
       ),
