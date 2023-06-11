@@ -13,8 +13,8 @@ class NewContacto extends StatelessWidget {
     this.contactoModel,
   }) {
     if (contactoModel != null) {
-      name.text = contactoModel!.name;
-      phoneNumber.text = contactoModel!.phoneNumber;
+      name.text = contactoModel!.name!;
+      phoneNumber.text = contactoModel!.phoneNumber!;
     }
   }
   TextEditingController name = TextEditingController();

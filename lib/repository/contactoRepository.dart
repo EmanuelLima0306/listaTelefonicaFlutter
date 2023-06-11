@@ -1,35 +1,28 @@
+import 'package:lista_telefonica/bd/db.dart';
 import 'package:lista_telefonica/model/concato.dart';
 
 class ContactoRepository {
   final List<ContactoModel> _contactos = [];
 
-  List<ContactoModel> LoadContactos() {
-    _contactos.clear();
-    _contactos.addAll([
-      ContactoModel(name: "José Paulo", phoneNumber: "+244923764519"),
-      ContactoModel(name: "José Costa", phoneNumber: "+244924784519"),
-      ContactoModel(name: "Paulo da Cunha", phoneNumber: "+244924784519"),
-    ]);
-    return _contactos;
+  Future<List<ContactoModel>> LoadContactos() async {
+    final db = await openDataBae();
+    final contactos = await db.query("contactos");
+    return contactos.map((e) => ContactoModel.fromJson(e)).toList();
   }
 
-  List<ContactoModel> add(ContactoModel contactoModel) {
-    _contactos.add(contactoModel);
-    return _contactos;
+  Future<int> add(ContactoModel contactoModel) async {
+    final db = await openDataBae();
+    return db.insert("contactos", contactoModel.toJson());
   }
 
-  List<ContactoModel> remove(ContactoModel contactoModel) {
-    _contactos.remove(contactoModel);
-    return _contactos;
+  Future<int> remove(ContactoModel contactoModel) async {
+    final db = await openDataBae();
+    return db.delete("contactos", where: "id=?", whereArgs: [contactoModel.id]);
   }
 
-  List<ContactoModel> update(ContactoModel contactoModel) {
-    _contactos.forEach((element) {
-      if (element == contactoModel) {
-        element.name = contactoModel.name;
-        element.phoneNumber = contactoModel.phoneNumber;
-      }
-    });
-    return _contactos;
+  Future<int> update(ContactoModel contactoModel) async {
+    final db = await openDataBae();
+    return db.update("contactos", contactoModel.toJson(),
+        where: "id=?", whereArgs: [contactoModel.id]);
   }
 }

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/material.dart';
 import 'package:lista_telefonica/blocs/event/contactoEvet.dart';
 import 'package:lista_telefonica/blocs/state/contactoState.dart';
 import 'package:lista_telefonica/model/concato.dart';
@@ -18,16 +19,22 @@ class ContactoBloc {
     _inputContactoController.stream.listen(_mapEventToState);
   }
 
-  _mapEventToState(ContactoEvent contactoEvent) {
+  _mapEventToState(ContactoEvent contactoEvent) async {
     List<ContactoModel> _contactos = [];
     if (contactoEvent is LoadContactoEvent) {
-      _contactos = _contactoRepository.LoadContactos();
+      _contactos = await _contactoRepository.LoadContactos();
     } else if (contactoEvent is AddContactoEvent) {
-      _contactos = _contactoRepository.add(contactoEvent.contactoModel);
+      if (await _contactoRepository.add(contactoEvent.contactoModel) != 0) {
+        _contactos = await _contactoRepository.LoadContactos();
+      }
     } else if (contactoEvent is RemoveContactoEvent) {
-      _contactos = _contactoRepository.remove(contactoEvent.contactoModel);
+      if (await _contactoRepository.remove(contactoEvent.contactoModel) != 0) {
+        _contactos = await _contactoRepository.LoadContactos();
+      }
     } else if (contactoEvent is UpdateContactoEvent) {
-      _contactos = _contactoRepository.update(contactoEvent.contactoModel);
+      if (await _contactoRepository.update(contactoEvent.contactoModel) != 0) {
+        _contactos = await _contactoRepository.LoadContactos();
+      }
     }
 
     _outputContactoController.add(ContactoSucessState(contactos: _contactos));

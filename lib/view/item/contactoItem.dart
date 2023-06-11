@@ -56,7 +56,7 @@ class _ContactoItemState extends State<ContactoItem> {
                   alignment: Alignment.center,
                   color: ThemeColor.primaryColor,
                   child: Text(
-                    widget.contactoModel.name[0],
+                    widget.contactoModel.name![0],
                     style: TextStyle(
                         color: ThemeColor.CardColor,
                         fontWeight: FontWeight.bold,
@@ -70,7 +70,7 @@ class _ContactoItemState extends State<ContactoItem> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    widget.contactoModel.name,
+                    widget.contactoModel.name!,
                     style: TextStyle(
                       color: ThemeColor.titleColor,
                       fontSize: 16,
@@ -78,7 +78,7 @@ class _ContactoItemState extends State<ContactoItem> {
                     ),
                   ),
                   Text(
-                    widget.contactoModel.phoneNumber,
+                    widget.contactoModel.phoneNumber!,
                     style: TextStyle(
                         color: ThemeColor.subtitleColor,
                         fontSize: 14,
