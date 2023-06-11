@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lista_telefonica/blocs/contactoBloc.dart';
 import 'package:lista_telefonica/blocs/event/contactoEvet.dart';
 import 'package:lista_telefonica/blocs/state/contactoState.dart';
 import 'package:lista_telefonica/theme/Theme.dart';
+import 'package:lista_telefonica/view/contactoNewPage.dart';
 import 'package:lista_telefonica/view/item/contactoItem.dart';
 
 class ContactoListPage extends StatefulWidget {
@@ -60,19 +62,49 @@ class _ContactoListPageState extends State<ContactoListPage> {
       ]),
       body: StreamBuilder<ContactoState>(
           stream: bloc.stream,
-          builder: (context, snapshot) {
+          builder: (context, AsyncSnapshot<ContactoState> snapshot) {
             final contactosList = snapshot.data?.contactos ?? [];
 
-            return Container(
-              padding: const EdgeInsets.all(20),
-              color: ThemeColor.CardColor,
-              child: ListView(
-                children: [
-                  ...contactosList.map((contacto) => ContactoItem(
-                        contactoModel: contacto,
-                      ))
-                ],
-              ),
+            return Stack(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(20),
+                  color: ThemeColor.CardColor,
+                  child: ListView(
+                    children: [
+                      ...contactosList.map((contacto) => ContactoItem(
+                            bloc: bloc,
+                            contactoModel: contacto,
+                          ))
+                    ],
+                  ),
+                ),
+                Positioned(
+                  bottom: 50,
+                  width: size.width,
+                  child: Center(
+                    child: Container(
+                      decoration: BoxDecoration(
+                          color: ThemeColor.primaryColor,
+                          borderRadius: BorderRadius.circular(10)),
+                      child: IconButton(
+                        onPressed: () =>
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => NewContacto(
+                                      contactoBloc: bloc,
+                                      contactoModel: null,
+                                    ))),
+                        icon: Icon(Icons.add),
+                        color: ThemeColor.CardColor,
+                      ),
+                    ),
+                  ),
+                )
+                    .animate(
+                      onPlay: (controller) => controller.repeat(),
+                    )
+                    .shake(hz: 5, delay: 2000.ms)
+              ],
             );
           }),
     );

@@ -20,13 +20,14 @@ class ContactoBloc {
 
   _mapEventToState(ContactoEvent contactoEvent) {
     List<ContactoModel> _contactos = [];
-
     if (contactoEvent is LoadContactoEvent) {
       _contactos = _contactoRepository.LoadContactos();
     } else if (contactoEvent is AddContactoEvent) {
       _contactos = _contactoRepository.add(contactoEvent.contactoModel);
     } else if (contactoEvent is RemoveContactoEvent) {
       _contactos = _contactoRepository.remove(contactoEvent.contactoModel);
+    } else if (contactoEvent is UpdateContactoEvent) {
+      _contactos = _contactoRepository.update(contactoEvent.contactoModel);
     }
 
     _outputContactoController.add(ContactoSucessState(contactos: _contactos));

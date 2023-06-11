@@ -13,3 +13,8 @@ class RemoveContactoEvent extends ContactoEvent {
   ContactoModel contactoModel;
   RemoveContactoEvent({required this.contactoModel});
 }
+
+class UpdateContactoEvent extends ContactoEvent {
+  ContactoModel contactoModel;
+  UpdateContactoEvent({required this.contactoModel});
+}

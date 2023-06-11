@@ -31,7 +31,7 @@ class MyButtons extends StatelessWidget {
           ElevatedButton.icon(
             style:
                 ElevatedButton.styleFrom(backgroundColor: ThemeColor.CardColor),
-            onPressed: () => ontapEdite,
+            onPressed: () => ontapEdite!(),
             icon: Icon(
               Icons.edit,
               color: ThemeColor.titleColor,
@@ -42,7 +42,7 @@ class MyButtons extends StatelessWidget {
           ElevatedButton.icon(
             style:
                 ElevatedButton.styleFrom(backgroundColor: ThemeColor.CardColor),
-            onPressed: () => ontapEdite,
+            onPressed: () => ontapDelete!(),
             icon: const Icon(
               Icons.delete,
               color: Colors.red,
@@ -52,6 +52,6 @@ class MyButtons extends StatelessWidget {
           )
         ],
       ),
-    ).animate().scaleX();
+    ).animate().slideX(begin: 1, end: 0, duration: 600.ms);
   }
 }

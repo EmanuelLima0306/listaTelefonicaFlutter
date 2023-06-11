@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:lista_telefonica/blocs/contactoBloc.dart';
+import 'package:lista_telefonica/blocs/event/contactoEvet.dart';
 import 'package:lista_telefonica/model/concato.dart';
 import 'package:lista_telefonica/theme/Theme.dart';
+import 'package:lista_telefonica/view/contactoNewPage.dart';
 import 'package:lista_telefonica/view/item/buttons.dart';
 import 'package:lista_telefonica/view/item/iconIlustrate.dart';
 
 class ContactoItem extends StatefulWidget {
-  ContactoModel contactoModel;
-  ContactoItem({super.key, required this.contactoModel});
+  final ContactoBloc bloc;
+  final ContactoModel contactoModel;
+
+  ContactoItem({super.key, required this.contactoModel, required this.bloc});
 
   @override
   State<ContactoItem> createState() => _ContactoItemState();
@@ -52,7 +57,10 @@ class _ContactoItemState extends State<ContactoItem> {
                   color: ThemeColor.primaryColor,
                   child: Text(
                     widget.contactoModel.name[0],
-                    style: TextStyle(color: ThemeColor.CardColor),
+                    style: TextStyle(
+                        color: ThemeColor.CardColor,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16),
                   )),
             ),
             Container(
@@ -80,7 +88,17 @@ class _ContactoItemState extends State<ContactoItem> {
               ),
             ),
             if (_showSecondElement)
-              MyButtons(myWith: size.width * .4, myHeight: size.width * .1)
+              MyButtons(
+                myWith: size.width * .4,
+                myHeight: size.width * .1,
+                ontapDelete: () => widget.bloc.inputCotacto.add(
+                    RemoveContactoEvent(contactoModel: widget.contactoModel)),
+                ontapEdite: () => Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => NewContacto(
+                          contactoBloc: widget.bloc,
+                          contactoModel: widget.contactoModel,
+                        ))),
+              )
             else
               MyIconIlustrate(
                   myWith: size.width * .4, myHeight: size.width * .1)
